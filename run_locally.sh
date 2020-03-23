@@ -22,4 +22,4 @@ then
     set +e
 fi
 
-venv/bin/ansible-playbook --connection=local --inventory 127.0.0.1, --limit 127.0.0.1 main.yml --ask-become-pass
+venv/bin/ansible-playbook --connection=local --inventory 127.0.0.1, --limit 127.0.0.1 main.yml --ask-become-pass $@

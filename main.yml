@@ -52,11 +52,20 @@
       become: true
       apt:
         update_cache: yes
+      tags:
+        - long
     - name: Install packages
       become: true
       apt:
         name: ['openconnect', 'build-essential', 'python3-dev', 'cmake', 'exuberant-ctags', 'nfs-common', 'git', 'virtualenv', 'awesome', 'awesome-extra', 'net-tools', 'tmux', 'rxvt-unicode', 'zsh', 'xcompmgr', 'conky', 'vim', 'zsh', 'python-ropemode', 'python-pip', 'python3-pip']
         state: latest
+    - name: Download & install Chrome
+      become: true
+      apt:
+          deb: https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+      tags:
+        - long
+
     - name: Create source directory structure
       file:
         name: "~/source/private"
@@ -98,11 +107,18 @@
         dest: ~/.vim/bundle/Vundle.vim
       when: not vundle.stat.exists
 
+    - name: Create vim undo dir
+      file:
+          name: ~/.vim_undo
+          state: directory
+
     - name: Install vim plugins
       shell: vim +PluginInstall +qall
 
     - name: Compile YouCompleteMe
       shell: cd ~/.vim/bundle/YouCompleteMe && python3 install.py
+      tags:
+        - long
 
     - name: Install ropevim
       become: true
