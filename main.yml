@@ -1,0 +1,115 @@
+---
+- hosts: all
+  become: false
+  gather_facts: true
+  vars:
+    config_files:
+      awesome:
+        src: awesome
+        link: ~/.config/awesome
+      conky:
+        src: conky/conkyrc
+        link: ~/.conkyrc
+      git:
+        src: git/gitconfig
+        link: ~/.gitconfig
+      tmux:
+        src: tmux/tmux.conf
+        link: ~/.tmux.conf
+      vimrc:
+        src: vim/vimrc
+        link: ~/.vimrc
+      vim:
+        src: vim/vim
+        link: ~/.vim
+      xdefaults:
+        src: Xapplications/Xdefaults
+        link: ~/.Xdefaults
+      xinitrc:
+        src: Xapplications/xinitrc
+        link: ~/.xinitrc
+      Xmodmap:
+        src: Xapplications/Xmodmap
+        link: ~/.Xmodmap
+      Xresources:
+        src: Xapplications/Xresources
+        link: ~/.Xresources
+      zsh:
+        src: zsh/zshrc
+        link: ~/.zshrc
+      zsh_theme:
+        src: venefyxatu.zsh-theme
+        link: ~/.oh-my-zsh/themes/venefyxatu.zsh-theme
+
+  tasks:
+    - name: Add awesomewm PPA
+      become: true
+      apt_repository:
+        repo: ppa:klaus-vormweg/awesome
+        state: present
+        filename: awesome-wm
+    - name: Update apt cache
+      become: true
+      apt:
+        update_cache: yes
+    - name: Install packages
+      become: true
+      apt:
+        name: ['openconnect', 'build-essential', 'python3-dev', 'cmake', 'exuberant-ctags', 'nfs-common', 'git', 'virtualenv', 'awesome', 'awesome-extra', 'net-tools', 'tmux', 'rxvt-unicode', 'zsh', 'xcompmgr', 'conky', 'vim', 'zsh', 'python-ropemode', 'python-pip', 'python3-pip']
+        state: latest
+    - name: Create source directory structure
+      file:
+        name: "~/source/private"
+        state: directory
+
+    - name: Check if configrations repo already exists
+      stat: path=~/source/private/configurations/
+      register: configs
+    - name: Clone configurations repo
+      git:
+        repo: git@github.com:Venefyxatu/Configurations
+        dest: "~/source/private/configurations"
+        key_file: "~/.ssh/id_rsa_github"
+      when: not configs.stat.exists
+
+    - name: Create config symlinks
+      file:
+        state: link
+        src: "~/source/private/configurations/{{ item.value.src }}"
+        name: "{{ item.value.link }}"
+      loop: "{{ lookup('dict', config_files ) }}"
+
+    - name: Check if oh-my-zsh repo already exists
+      stat: path=~/.oh-my-zsh
+      register: ohmyzsh
+    - name: Clone oh-my-zsh
+      git:
+        repo: git@github.com:ohmyzsh/ohmyzsh
+        dest: ~/.oh-my-zsh
+      when: not ohmyzsh.stat.exists
+
+    - name: Check if vundle repo already exists
+      stat: path=~/.vim/bundle/Vundle.vim
+      register: vundle
+
+    - name: Clone Vundle
+      git:
+        repo: git@github.com:VundleVim/Vundle.vim
+        dest: ~/.vim/bundle/Vundle.vim
+      when: not vundle.stat.exists
+
+    - name: Install vim plugins
+      shell: vim +PluginInstall +qall
+
+    - name: Compile YouCompleteMe
+      shell: cd ~/.vim/bundle/YouCompleteMe && python3 install.py
+
+    - name: Install ropevim
+      become: true
+      shell: pip3 install rope ropevim
+
+    - name: Set user shell
+      become: true
+      user:
+        name: erik
+        shell: /usr/bin/zsh
