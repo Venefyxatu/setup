@@ -1,0 +1,68 @@
+---
+config_files:
+     awesome:
+         src: awesome
+         link: ~/.config/awesome
+     conky:
+         src: conky/conkyrc
+         link: ~/.conkyrc
+     git:
+         src: git/gitconfig
+         link: ~/.gitconfig
+     tmux:
+         src: tmux/tmux.conf
+         link: ~/.tmux.conf
+     vimrc:
+         src: vim/vimrc
+         link: ~/.vimrc
+     vim:
+         src: vim/vim
+         link: ~/.vim
+     xdefaults:
+         src: Xapplications/Xdefaults
+         link: ~/.Xdefaults
+     xinitrc:
+         src: Xapplications/xinitrc
+         link: ~/.xinitrc
+     Xmodmap:
+         src: Xapplications/Xmodmap
+         link: ~/.Xmodmap
+     Xresources:
+         src: Xapplications/Xresources
+         link: ~/.Xresources
+     zsh:
+         src: zsh/zshrc
+         link: ~/.zshrc
+     zsh_theme:
+         src: venefyxatu.zsh-theme
+         link: ~/.oh-my-zsh/themes/venefyxatu.zsh-theme
+
+packages:
+     - 'openconnect'
+     - 'build-essential'
+     - 'python3-dev'
+     - 'cmake'
+     - 'exuberant-ctags'
+     - 'nfs-common'
+     - 'git'
+     - 'virtualenv'
+     - 'awesome'
+     - 'awesome-extra'
+     - 'net-tools'
+     - 'tmux'
+     - 'rxvt-unicode'
+     - 'zsh'
+     - 'xcompmgr'
+     - 'conky'
+     - 'vim'
+     - 'zsh'
+     - 'python-ropemode'
+     - 'python-pip'
+     - 'python3-pip'
+     - 'i3lock'
+     - 'colordiff'
+     - 'openssh-server'
+     - 'virtualbox'
+     - 'vagrant'
+
+username: erik

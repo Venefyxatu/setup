@@ -2,44 +2,8 @@
 - hosts: all
   become: false
   gather_facts: true
-  vars:
-    config_files:
-      awesome:
-        src: awesome
-        link: ~/.config/awesome
-      conky:
-        src: conky/conkyrc
-        link: ~/.conkyrc
-      git:
-        src: git/gitconfig
-        link: ~/.gitconfig
-      tmux:
-        src: tmux/tmux.conf
-        link: ~/.tmux.conf
-      vimrc:
-        src: vim/vimrc
-        link: ~/.vimrc
-      vim:
-        src: vim/vim
-        link: ~/.vim
-      xdefaults:
-        src: Xapplications/Xdefaults
-        link: ~/.Xdefaults
-      xinitrc:
-        src: Xapplications/xinitrc
-        link: ~/.xinitrc
-      Xmodmap:
-        src: Xapplications/Xmodmap
-        link: ~/.Xmodmap
-      Xresources:
-        src: Xapplications/Xresources
-        link: ~/.Xresources
-      zsh:
-        src: zsh/zshrc
-        link: ~/.zshrc
-      zsh_theme:
-        src: venefyxatu.zsh-theme
-        link: ~/.oh-my-zsh/themes/venefyxatu.zsh-theme
+  vars_files:
+      - vars.yml
 
   tasks:
     - name: Add awesomewm PPA
@@ -48,6 +12,22 @@
         repo: ppa:klaus-vormweg/awesome
         state: present
         filename: awesome-wm
+    - name: Add Vagrant PPA
+      become: true
+      apt_repository:
+          repo: ppa:tiagohillebrandt/vagrant
+          filename: vagrant
+    - name: Add VBox apt keys
+      become: true
+      apt_key:
+          url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+          state: present
+    - name: Add VirtualBox repository
+      become: true
+      apt_repository:
+          repo: "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib"
+          filename: vbox
+
     - name: Update apt cache
       become: true
       apt:
@@ -57,7 +37,7 @@
     - name: Install packages
       become: true
       apt:
-        name: ['openconnect', 'build-essential', 'python3-dev', 'cmake', 'exuberant-ctags', 'nfs-common', 'git', 'virtualenv', 'awesome', 'awesome-extra', 'net-tools', 'tmux', 'rxvt-unicode', 'zsh', 'xcompmgr', 'conky', 'vim', 'zsh', 'python-ropemode', 'python-pip', 'python3-pip']
+        name: "{{ packages }}"
         state: latest
     - name: Download & install Chrome
       become: true
@@ -124,8 +104,16 @@
       become: true
       shell: pip3 install rope ropevim
 
+    - name: Link runonce script
+      become: true
+      file:
+          state: link
+          src: ~/source/private/configurations/scripts/runonce.sh
+          dest: /usr/bin/runonce.sh
+          mode: 0755
+
     - name: Set user shell
       become: true
       user:
-        name: erik
+        name: "{{ username }}"
         shell: /usr/bin/zsh

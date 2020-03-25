@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# This script will get you going when starting completely from scratch.
+# All you need is to have python installed, everything else will be taken care of for you.
+
 if [ ! -e ~/.ssh/id_rsa_github ]
 then
     ssh-keygen -b 4096 -t rsa -N '' -C "Github key for `hostname`" -f ~/.ssh/id_rsa_github
