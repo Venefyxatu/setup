@@ -27,6 +27,16 @@
       apt_repository:
           repo: "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib"
           filename: vbox
+    - name: Add Docker apt keys
+      become: true
+      apt_key:
+          url: https://download.docker.com/linux/ubuntu/gpg
+          state: present
+    - name: Add Docker repository
+      become: true
+      apt_repository:
+          repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+          filename: docker
 
     - name: Update apt cache
       become: true
@@ -108,7 +118,7 @@
       become: true
       file:
           state: link
-          src: ~/source/private/configurations/scripts/runonce.sh
+          src: "~{{ username }}/source/private/configurations/scripts/runonce.sh"
           dest: /usr/bin/runonce.sh
           mode: 0755
 
@@ -117,3 +127,18 @@
       user:
         name: "{{ username }}"
         shell: /usr/bin/zsh
+    - name: Add user to docker group
+      become: true
+      user:
+          name: "{{ username }}"
+          append: yes
+          groups:
+            - docker
+            - erik
+            - adm
+            - cdrom
+            - sudo
+            - dip
+            - plugdev
+            - lpadmin
+            - sambashare
