@@ -44,11 +44,14 @@
         update_cache: yes
       tags:
         - long
+        - minimal
     - name: Install packages
       become: true
       apt:
         name: "{{ packages }}"
         state: latest
+      tags:
+        - minimal
     - name: Download & install Chrome
       become: true
       apt:
@@ -60,16 +63,22 @@
       file:
         name: "~/source/private"
         state: directory
+      tags:
+        - minimal
 
     - name: Check if configrations repo already exists
       stat: path=~/source/private/configurations/
       register: configs
+      tags:
+        - minimal
     - name: Clone configurations repo
       git:
         repo: git@github.com:Venefyxatu/Configurations
         dest: "~/source/private/configurations"
         key_file: "~/.ssh/id_rsa_github"
       when: not configs.stat.exists
+      tags:
+        - minimal
 
     - name: Create config symlinks
       file:
@@ -77,42 +86,60 @@
         src: "~/source/private/configurations/{{ item.value.src }}"
         name: "{{ item.value.link }}"
       loop: "{{ lookup('dict', config_files ) }}"
+      tags:
+        - minimal
 
     - name: Check if oh-my-zsh repo already exists
       stat: path=~/.oh-my-zsh
       register: ohmyzsh
+      tags:
+        - minimal
     - name: Clone oh-my-zsh
       git:
         repo: git@github.com:ohmyzsh/ohmyzsh
         dest: ~/.oh-my-zsh
       when: not ohmyzsh.stat.exists
+      tags:
+        - minimal
 
     - name: Check if vundle repo already exists
       stat: path=~/.vim/bundle/Vundle.vim
       register: vundle
+      tags:
+        - minimal
 
     - name: Clone Vundle
       git:
         repo: git@github.com:VundleVim/Vundle.vim
         dest: ~/.vim/bundle/Vundle.vim
       when: not vundle.stat.exists
+      tags:
+        - minimal
 
     - name: Create vim undo dir
       file:
           name: ~/.vim_undo
           state: directory
+      tags:
+        - minimal
 
     - name: Install vim plugins
       shell: vim +PluginInstall +qall
+      tags:
+        - minimal
 
     - name: Compile YouCompleteMe
       shell: cd ~/.vim/bundle/YouCompleteMe && python3 install.py
       tags:
         - long
+      tags:
+        - minimal
 
     - name: Install ropevim
       become: true
       shell: pip3 install rope ropevim
+      tags:
+        - minimal
 
     - name: Link runonce script
       become: true
@@ -127,7 +154,9 @@
       user:
         name: "{{ username }}"
         shell: /usr/bin/zsh
-    - name: Add user to docker group
+      tags:
+        - minimal
+    - name: Add user to groups
       become: true
       user:
           name: "{{ username }}"
@@ -142,3 +171,5 @@
             - plugdev
             - lpadmin
             - sambashare
+      tags:
+        - minimal
