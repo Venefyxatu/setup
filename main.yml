@@ -60,29 +60,6 @@
       tags:
         - minimal
 
-    - name: Check if configrations repo already exists
-      stat: path=~/source/private/configurations/
-      register: configs
-      tags:
-        - minimal
-    - name: Clone configurations repo
-      git:
-        repo: git@github.com:Venefyxatu/Configurations
-        dest: "~/source/private/configurations"
-        key_file: "~/.ssh/id_rsa_github"
-      when: not configs.stat.exists
-      tags:
-        - minimal
-
-    - name: Create config symlinks
-      file:
-        state: link
-        src: "~/source/private/configurations/{{ item.value.src }}"
-        name: "{{ item.value.link }}"
-      loop: "{{ lookup('dict', config_files ) }}"
-      tags:
-        - minimal
-
     - name: Check if oh-my-zsh repo already exists
       stat: path=~/.oh-my-zsh
       register: ohmyzsh
@@ -114,6 +91,31 @@
       file:
           name: ~/.vim_undo
           state: directory
+      tags:
+        - minimal
+
+
+    - name: Check if configrations repo already exists
+      stat: path=~/source/private/configurations/
+      register: configs
+      tags:
+        - minimal
+    - name: Clone configurations repo
+      git:
+        repo: git@github.com:Venefyxatu/Configurations
+        dest: "~/source/private/configurations"
+        key_file: "~/.ssh/id_rsa_github"
+        accept_hostkey: true
+      when: not configs.stat.exists
+      tags:
+        - minimal
+
+    - name: Create config symlinks
+      file:
+        state: link
+        src: "~/source/private/configurations/{{ item.value.src }}"
+        name: "{{ item.value.link }}"
+      loop: "{{ lookup('dict', config_files ) }}"
       tags:
         - minimal
 
