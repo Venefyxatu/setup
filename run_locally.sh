@@ -18,6 +18,10 @@ then
     if [ $? -ne 0 ]
     then
         sudo apt install -y python-virtualenv
+        if [ $? -ne 0 ]
+        then
+            sudo apt install -y virtualenv
+        fi
         virtualenv --python=python3 venv
     fi
     set -e
