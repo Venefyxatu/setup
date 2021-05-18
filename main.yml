@@ -6,12 +6,6 @@
       - vars.yml
 
   tasks:
-    - name: Add awesomewm PPA
-      become: true
-      apt_repository:
-        repo: ppa:klaus-vormweg/awesome
-        state: present
-        filename: awesome-wm
     - name: Add Vagrant PPA
       become: true
       apt_repository:
