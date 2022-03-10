@@ -67,7 +67,7 @@
         - minimal
     - name: Clone oh-my-zsh
       git:
-        repo: git@github.com:ohmyzsh/ohmyzsh
+        repo: https://github.com/ohmyzsh/ohmyzsh
         dest: ~/.oh-my-zsh
       when: not ohmyzsh.stat.exists
       tags:
@@ -76,14 +76,6 @@
     - name: Check if vundle repo already exists
       stat: path=~/.vim/bundle/Vundle.vim
       register: vundle
-      tags:
-        - minimal
-
-    - name: Clone Vundle
-      git:
-        repo: git@github.com:VundleVim/Vundle.vim
-        dest: ~/.vim/bundle/Vundle.vim
-      when: not vundle.stat.exists
       tags:
         - minimal
 
@@ -116,6 +108,14 @@
         src: "~/source/private/configurations/{{ item.value.src }}"
         name: "{{ item.value.link }}"
       loop: "{{ lookup('dict', config_files ) }}"
+      tags:
+        - minimal
+
+    - name: Clone Vundle
+      git:
+        repo: https://github.com/VundleVim/Vundle.vim
+        dest: ~/.vim/bundle/Vundle.vim
+      when: not vundle.stat.exists
       tags:
         - minimal
 
