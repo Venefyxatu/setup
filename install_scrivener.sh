@@ -10,7 +10,7 @@ mkdir -p ~/Downloads
 cd ~/Downloads
 
 echo 'Ping through wine to initialize the environment as 32bit'
-WINEARCH=win32 WINEPREFIX=~/.wine ping google.com
+WINEARCH=win32 WINEPREFIX=~/.wine wine ping google.com
 
 echo 'Winetricks for required software'
 winetricks win10
