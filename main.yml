@@ -6,11 +6,6 @@
       - vars.yml
 
   tasks:
-    - name: Add Vagrant PPA
-      become: true
-      apt_repository:
-          repo: ppa:tiagohillebrandt/vagrant
-          filename: vagrant
     - name: Add VBox apt keys
       become: true
       apt_key:
