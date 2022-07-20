@@ -12,6 +12,14 @@ then
     read
 fi
 
+virtualenv --version
+
+if [ $? -ne 0 ]
+then
+    echo "Installing virtualenv"
+    sudo apt install python3-virtualenv
+fi
+
 if [ ! -e venv ]
 then
     virtualenv --python=python3 venv
