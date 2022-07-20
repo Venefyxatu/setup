@@ -17,7 +17,7 @@ virtualenv --version
 if [ $? -ne 0 ]
 then
     echo "Installing virtualenv"
-    sudo apt install python3-virtualenv
+    sudo apt install -y python3-virtualenv
 fi
 
 if [ ! -e venv ]
