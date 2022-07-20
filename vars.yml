@@ -42,6 +42,7 @@ packages:
      - 'arandr'
      - 'awesome'
      - 'awesome-extra'
+     - 'brave-browser'
      - 'build-essential'
      - 'cmake'
      - 'colordiff'

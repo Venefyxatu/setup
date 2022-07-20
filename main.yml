@@ -23,9 +23,12 @@
           state: present
     - name: Add Brave apt key
       become: true
-      apt_key:
+      get_url:
           url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
-          state: present
+          dest: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+          owner: root
+          group: root
+          mode: 0644
     - name: Add WineHQ apt key
       become: true
       get_url:
@@ -41,6 +44,11 @@
       apt_repository:
           repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
           filename: docker
+    - name: Add Brave repository
+      become: true
+      apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"
+        filename: brave
     - name: Add WineHQ repository
       become: true
       get_url:
@@ -189,6 +197,7 @@
             - lpadmin
       tags:
         - minimal
+
     - name: Install Wine
       become: true
       apt:
