@@ -16,18 +16,26 @@ xlogin*namePrompt: \040\040\040\040\040\040\040Login:
 xlogin*fail: Login incorrect or forbidden by policy
 
 #if WIDTH > 800
-xlogin*greetFont: -adobe-helvetica-bold-o-normal--20------iso8859-1
-! xlogin*greetFont: -adobe-helvetica-bold-o-normal--24-240-75-75-p-138-iso8859-1
-xlogin*font: -adobe-helvetica-medium-r-normal--14------iso8859-1
-! xlogin*font: -adobe-helvetica-medium-r-normal--18-180-75-75-p-98-iso8859-1
-xlogin*promptFont: -adobe-helvetica-bold-r-normal--14------iso8859-1
-! xlogin*promptFont: -adobe-helvetica-bold-r-normal--18-180-75-75-p-103-iso8859-1
-xlogin*failFont: -adobe-helvetica-bold-r-normal--14------iso8859-1
-! xlogin*failFont: -adobe-helvetica-bold-r-normal--18-180-75-75-p-103-iso8859-1
-xlogin*greetFace:	Serif-24:bold:italic
-xlogin*face: 		Helvetica-18
-xlogin*promptFace: 	Helvetica-18:bold
-xlogin*failFace: 	Helvetica-18:bold
+xlogin*greetFont: xft:monaco:size=14
+xlogin*font: xft:monaco:size=12
+xlogin*promptFont: xft:monaco:size=12
+xlogin*failFont: xft:monaco:size=12
+xlogin*greetFace: xft:monaco:size=14
+xlogin*face: xft:monaco:size=12
+xlogin*promptFace: xft:monaco:size=12
+xlogin*failFace: xft:monaco:size=12
+! xlogin*greetFont: -adobe-helvetica-bold-o-normal--20------iso8859-1
+! ! xlogin*greetFont: -adobe-helvetica-bold-o-normal--24-240-75-75-p-138-iso8859-1
+! xlogin*font: -adobe-helvetica-medium-r-normal--14------iso8859-1
+! ! xlogin*font: -adobe-helvetica-medium-r-normal--18-180-75-75-p-98-iso8859-1
+! xlogin*promptFont: -adobe-helvetica-bold-r-normal--14------iso8859-1
+! ! xlogin*promptFont: -adobe-helvetica-bold-r-normal--18-180-75-75-p-103-iso8859-1
+! xlogin*failFont: -adobe-helvetica-bold-r-normal--14------iso8859-1
+! ! xlogin*failFont: -adobe-helvetica-bold-r-normal--18-180-75-75-p-103-iso8859-1
+! xlogin*greetFace:	Serif-24:bold:italic
+! xlogin*face: 		Helvetica-18
+! xlogin*promptFace: 	Helvetica-18:bold
+! xlogin*failFace: 	Helvetica-18:bold
 #else
 xlogin*greetFont: -adobe-helvetica-bold-o-normal--20------iso8859-1
 xlogin*font: -adobe-helvetica-medium-r-normal--14------iso8859-1
@@ -79,7 +87,8 @@ xlogin*hiColor: black
 ! xlogin*useShape: true
 ! xlogin*logoPadding: 0
 ! xlogin*logoPadding: 10
-xlogin*geometry: 500x200-30-30
+! xlogin*geometry: 700x300-30-30
+xlogin*geometry: 700x300
 ! line was absent
 
 
@@ -88,7 +97,7 @@ XConsole.verbose:	true
 XConsole*iconic:	true
 XConsole*font:		fixed
 
-Chooser*geometry:		700x500+300+200
+Chooser*geometry:		700x300+300+200
 Chooser*allowShellResize:	false
 Chooser*viewport.forceBars:	true
 Chooser*label.font:		*-new century schoolbook-bold-i-normal-*-240-*

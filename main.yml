@@ -166,13 +166,25 @@
       tags:
         - minimal
 
-    - name: Link runonce script
+    - name: Link scripts
       become: true
       file:
           state: link
-          src: "~{{ username }}/source/private/configurations/scripts/runonce.sh"
-          dest: /usr/bin/runonce.sh
+          src: "~{{ username }}/source/private/configurations/scripts/{{ item }}"
+          dest: "/usr/bin/{{ item }}"
           mode: 0755
+      with_items:
+        - runonce.sh
+        - sysbacklight
+
+    - name: Copy sudoers
+      become: true
+      file:
+          src: "~{{ username }}/source/private/configurations/sudoers/backlight"
+          dest: "/etc/sudoers.d/backlight"
+          mode: 0644
+          owner: root
+          group: root
 
     - name: Set user shell
       become: true
