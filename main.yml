@@ -39,6 +39,24 @@
           mode: 0644
       tags:
           - wine
+    - name: Download Signal apt key
+      become: true
+      get_url:
+        url: https://updates.signal.org/desktop/apt/keys.asc
+        dest: ~/signal_keys.asc
+      tags:
+        - messengers
+    - name: Add Signal apt key
+      become: true
+      shell:
+        cmd: "cat ~/signal_keys.asc | gpg --dearmor > /usr/share/keyrings/signal-desktop-keyring.gpg"
+      tags:
+        - messengers
+    - name: Cleanup Signal key download
+      become: true
+      file:
+        path: ~/signal_keys.asc
+        state: absent
     - name: Add Docker repository
       become: true
       apt_repository:
@@ -56,6 +74,13 @@
           dest: /etc/apt/sources.list.d/winehq.sources
       tags:
           - wine
+    - name: Add Signal repository
+      become: true
+      apt_repository:
+        repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main"
+        filename: signal
+      tags:
+        - messengers
     - name: Enable i386 architecture
       become: true
       command: dpkg --add-architecture i386
@@ -179,12 +204,9 @@
 
     - name: Copy sudoers
       become: true
-      file:
-          src: "~{{ username }}/source/private/configurations/sudoers/backlight"
-          dest: "/etc/sudoers.d/backlight"
-          mode: 0644
-          owner: root
-          group: root
+      become: true
+      shell:
+        cmd: "cp ~{{ username }}/source/private/configurations/sudoers/backlight /etc/sudoers.d/backlight && chown root:root /etc/sudoers.d/backlight && chmod 0644 /etc/sudoers.d/backlight"
 
     - name: Set user shell
       become: true
@@ -241,3 +263,13 @@
         state: directory
       tags:
           - xdm
+    - name: Download discord
+      get_url:
+        url: https://discord.com/api/download?platform=linux&format=deb
+        dest: ~/Downloads/discord.deb
+      tags:
+        - messengers
+    - name: Install discord
+      become: true
+      apt:
+        deb: "~{{ username }}/Downloads/discord.deb"
