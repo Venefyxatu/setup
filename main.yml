@@ -201,6 +201,8 @@
       with_items:
         - runonce.sh
         - sysbacklight
+        - toggle_mute
+        - conky_volume
 
     - name: Copy sudoers
       become: true
@@ -273,3 +275,4 @@
       become: true
       apt:
         deb: "~{{ username }}/Downloads/discord.deb"
+      creates: /usr/bin/discord
