@@ -111,6 +111,21 @@
       tags:
         - minimal
 
+    - name: Ensure font directory
+      file:
+        state: directory
+        src: "~/.local/share/fonts"
+      tags:
+        - minimal
+
+    - name: Add Monaco font
+      file:
+        state: link
+        src: "~/source/private/configurations/local/share/fonts/Monaco-Linux.ttf"
+        name: "~/.local/share/fonts/Monaco-Linux.ttf"
+      tags:
+        - minimal
+
     - name: Clone Vundle
       git:
         repo: https://github.com/VundleVim/Vundle.vim
