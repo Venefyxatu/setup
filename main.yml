@@ -33,7 +33,7 @@
       become: true
       get_url:
           url: https://dl.winehq.org/wine-builds/winehq.key
-          dest: /usr/share/keyrings/winehq-archive.key
+          dest: /etc/apt/keyrings/winehq-archive.key
           owner: root
           group: root
           mode: 0644
@@ -237,6 +237,7 @@
     - name: Install Wine
       become: true
       apt:
+        update-cache: true
         name:
           - "winehq-staging"
           - "winbind"
@@ -265,14 +266,36 @@
         state: directory
       tags:
           - xdm
+    - name: Create sddm config folder
+      become: true
+      file:
+        name: /etc/sddm.conf.d
+        state: directory
+      tags:
+          - sddm
+    - name: Create home subfolders
+      file:
+        name: "~{{ username }}/{{ item }}"
+        state: directory
+      with_items:
+      - Downloads
+      - Pictures
+      - Music
+      - Movies
+    - name: Check whether discord is already installed
+      stat: path=/usr/bin/discord
+      register: discord
+      tags:
+        - messengers
     - name: Download discord
       get_url:
         url: https://discord.com/api/download?platform=linux&format=deb
-        dest: ~/Downloads/discord.deb
+        dest: "~{{ username }}/Downloads/discord.deb"
+      when: not discord.stat.exists
       tags:
         - messengers
     - name: Install discord
       become: true
       apt:
         deb: "~{{ username }}/Downloads/discord.deb"
-      creates: /usr/bin/discord
+      when: not discord.stat.exists

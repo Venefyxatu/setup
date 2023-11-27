@@ -9,6 +9,9 @@ config_files:
      git:
          src: git/gitconfig
          link: ~/.gitconfig
+     sddm:
+         src: sddm/config
+         link: /etc/sddm.conf.d/config
      tmux:
          src: tmux/tmux.conf
          link: ~/.tmux.conf
@@ -86,6 +89,8 @@ packages:
      - 'qiv'
      - 'rxvt-unicode'
      - 'scrot'
+     - 'sddm'
+     - 'sddm-theme-elarun'
      - 'signal-desktop'
      - 'smbclient'
      - 'socat'
@@ -98,7 +103,7 @@ packages:
      - 'virtualenv'
      - 'vlc'
      - 'xcompmgr'
-     - 'xdm'
+       # - 'xdm'  # replaced by sddm
      - 'xfonts-scalable'
      - 'xserver-xorg-core'
      - 'xserver-xorg-input-libinput'
